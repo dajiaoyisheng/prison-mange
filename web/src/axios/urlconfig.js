@@ -5,15 +5,15 @@ let storeEnv = store.state.env;
 let urlconfig = {
   // 人员定位beging
   // 监区
-  ppGetAreaData: `/criminalPosition.action?method=getPrisonAreas`,
+  ppGetAreaData: `/prisonRegion.action?method=getAllPrisonRegions`,
   // 监舍
-  ppGetHouseData: `/criminalPosition.action?method=getPrisonHouses`,
+  ppGetHouseData: `/prisonRegion.action?method=getRoomsByPrisonRegion`,
   // 监管类型
-  ppGetVisiontypeData: `/criminalPosition.action?method=getSuperviseTypes`,
+  ppGetVisiontypeData: `/systemCode.action?method=getSuperviseType`,
   // 搜索
   ppSearch: `/criminalPosition.action?method=getPrisonerList`,
   //人员基本信息
-  ppGetPrisoner: `/criminalPosition.action?method=getPrionserByNum`,
+  ppGetPrisoner: `/criminalManager.action?method=getCriminal`,
   //人员照片信息
   ppGetPrionserPhoto: `/criminalPosition.action?method=getPrionserPhoto`,
   //当前预警信息
