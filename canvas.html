@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>使用canvas绘制跟随鼠标移动的箭头</title>
+</head>
+
+<body>
+    <img id="camera" src="./Camera.png" />
+    <img id="right" src="./right.png" />
+    <img id="left" src="./left_45.png" />
+    <div id="info"></div>
+    <canvas width="500" height="500" style="border: 1px solid #555; display: block;"></canvas>
+</body>
+<script>
+    var image = document.getElementById("right");
+    image.onload = function() {
+        //箭头对象
+        var camera = function() {
+            this.x = 20;
+            this.y = 30;
+            this.dx = 0;
+            this.dy = 0;
+            this.rolation = 0;
+        }
+        var canvas = document.querySelector('canvas')
+        var ctx = canvas.getContext('2d');
+
+        var offsetLeft = canvas.offsetLeft,
+            offsetTop = canvas.offsetTop;
+
+        var imgW = image.width,
+            imgH = image.height;
+
+        var centerX = (this.x + (imgW / 2)),
+            centerY = (this.y + (imgH / 2));
+
+        camera.prototype.draw = function(ctx) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.save();
+            // 在旋转之前，把画布的中心位置translate到图片的中心
+            ctx.translate(centerX, centerY);
+            this.rolation = Math.atan2(this.dy, this.dx) / (Math.PI / 180);
+            ctx.rotate(this.rolation * Math.PI / 180);
+            ctx.translate(-imgW / 2, -imgH / 2 - this.rolation);
+            ctx.drawImage(image, 0, this.rolation);
+            ctx.restore();
+            if (this.x != 0 && this.y != 0 && this.dx != 0 && this.dy != 0) {
+                drawDashLine(ctx, centerX, centerY, c_x, c_y);
+            }
+        }
+
+        var Aamera = new camera();
+        var c_x, c_y; //相对于canvas坐标的位置；
+        var isMouseDown = false;
+        Aamera.draw(ctx);
+        canvas.addEventListener('mousedown', function(e) {
+            isMouseDown = true;
+        }, false)
+        canvas.addEventListener('mousemove', function(e) {
+            if (isMouseDown == true) {
+                c_x = getPos(e).x - offsetLeft;
+                c_y = getPos(e).y - offsetTop;
+                //setInterval(drawFram, 1000 / 60);
+                requestAnimationFrame(drawFram); //绘制动画，同上面被注释的setInterval，有兼容性问题，后续处理
+            }
+        }, false)
+        canvas.addEventListener('mouseup', function(e) {
+            isMouseDown = false;
+        }, false)
+
+        function drawFram() {
+            Aamera.dx = c_x - Aamera.x;
+            Aamera.dy = c_y - Aamera.y;
+            Aamera.draw(ctx);
+            document.getElementById('info').innerHTML = "旋转角度:" + Aamera.rolation;
+        };
+
+        //绘制虚线
+        function drawDashLine(ctx, x1, y1, x2, y2, dashLength) {
+            var dashLen = dashLength === undefined ? 5 : dashLength,
+                xpos = x2 - x1, //得到横向的宽度;
+                ypos = y2 - y1, //得到纵向的高度;
+                numDashes = Math.floor(Math.sqrt(xpos * xpos + ypos * ypos) / dashLen);
+            //利用正切获取斜边的长度除以虚线长度，得到要分为多少段;
+            ctx.beginPath();
+            for (var i = 0; i < numDashes; i++) {
+                if (i % 2 === 0) {
+                    ctx.moveTo(x1 + (xpos / numDashes) * i, y1 + (ypos / numDashes) * i);
+                    //有了横向宽度和多少段，得出每一段是多长，起点 + 每段长度 * i = 要绘制的起点；
+                } else {
+                    ctx.lineTo(x1 + (xpos / numDashes) * i, y1 + (ypos / numDashes) * i);
+                }
+            }
+            ctx.closePath();
+            ctx.stroke();
+        }
+
+        function getPos(e) {
+            var mouse = {
+                x: 0,
+                y: 0
+            }
+            var e = e || event;
+            var x, y;
+            if (e.pageX || e.pageY) {
+                x = e.pageX;
+                y = e.pageY;
+            } else {
+                x = e.pageX + document.body.scrollLeft + document.document.documentElement.scrollLeft;
+                y = e.pageY + document.body.scrollTop + document.document.documentElement.scrollTop;
+            }
+            mouse.x = x;
+            mouse.y = y;
+            return mouse;
+        }
+    }
+</script>
+
+</html>

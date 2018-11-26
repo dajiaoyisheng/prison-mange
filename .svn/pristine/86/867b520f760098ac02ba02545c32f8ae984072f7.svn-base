@@ -1,0 +1,130 @@
+<template>
+  <div>
+    <section class="pp-r-t">
+      <span class="block">
+        <span class="demonstration">时期</span>
+        <el-date-picker v-model="value7" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期"
+          end-placeholder="结束日期" :picker-options="pickerOptions2" size="mini">
+        </el-date-picker>
+      </span>
+      <span>预警事件类型：</span>
+      <el-select size="small" v-model="value" placeholder="请选择">
+        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+        </el-option>
+      </el-select>
+      <span>服刑人员姓名/编码：</span>
+      <el-input size="small" class="pp-input" v-model="input" placeholder="请输入内容"></el-input>
+      <el-button size="small" type="primary">搜索</el-button>
+      <el-button size="small" type="primary">返回</el-button>
+    </section>
+    <section>
+      <el-table :data="tableData" style="width: 100%">
+        <el-table-column prop="date" label="预警开始时间">
+        </el-table-column>
+        <el-table-column prop="date" label="预警结束时间">
+        </el-table-column>
+        <el-table-column prop="date" label="预警时长">
+        </el-table-column>
+        <el-table-column prop="date" label="预警事件类型">
+        </el-table-column>
+        <el-table-column prop="date" label="预警所在区域">
+        </el-table-column>
+        <el-table-column prop="date" label="预警规则">
+        </el-table-column>
+        <el-table-column prop="date" label="预警事件对象">
+        </el-table-column>
+        <el-table-column prop="date" label="预警视频">
+          <template slot-scope="scope">
+            <button @click="handleEdit(scope.$index, scope.row)">视频</button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </section>
+  </div>
+</template>
+
+<script>
+  export default {
+    name: 'violation',
+    data() {
+      return {
+        loading: false,
+        // 时间筛选
+        pickerOptions2: {
+          shortcuts: [{
+            text: '最近一周',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近一个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近三个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              picker.$emit('pick', [start, end]);
+            }
+          }]
+        },
+        value7: '',
+        // 预警事件类型
+        options: [{
+          value: '选项1',
+          label: '黄金糕'
+        }, {
+          value: '选项2',
+          label: '双皮奶'
+        }, {
+          value: '选项3',
+          label: '蚵仔煎'
+        }, {
+          value: '选项4',
+          label: '龙须面'
+        }, {
+          value: '选项5',
+          label: '北京烤鸭'
+        }],
+        value: '',
+        // 服刑人员类型
+        input: '',
+        // 
+        tableData: [{
+          date: '2016-05-02',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-04',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1517 弄'
+        }, {
+          date: '2016-05-01',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1519 弄'
+        }, {
+          date: '2016-05-03',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1516 弄'
+        }]
+      }
+    },
+    methods: {
+      handleEdit(index, row) {
+        // window.location.href = row.tv;
+        console.log(index, row);
+        window.open(row.tv)
+      },
+    }
+  }
+
+</script>

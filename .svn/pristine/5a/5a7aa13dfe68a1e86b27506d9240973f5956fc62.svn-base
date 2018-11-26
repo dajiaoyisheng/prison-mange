@@ -1,0 +1,246 @@
+<template>
+  <div id="systemmanagement" class="w1200">
+    <el-container>
+      <el-header>
+          <el-row>
+              <el-col :span="21" class="stm-header-title"><span>系统管理</span></el-col>
+          </el-row>
+      </el-header>
+      <el-main>
+          <el-tabs type="border-card">
+            <el-tab-pane label="日志管理">
+              <section>
+                <el-row class="logger-params">
+                  <el-col :span="20"><span style="color: #666;">用户操作日志</span></el-col>
+                  <el-col :span="4">
+                    <el-input size="mini" class="logger-params-input" v-model="parameter.name" placeholder="搜索关键词" clearable></el-input>
+                    <el-button size="mini" class="search-btn" @click="doQuery()">查询</el-button>
+                  </el-col>
+                </el-row>
+              </section>
+              <section>
+                <el-table :data="tableData5" style="width: 100%">
+                  <el-table-column type="expand">
+                    <template slot-scope="props">
+                      <el-form label-position="left" inline class="demo-table-expand">
+                        <el-form-item label="操作内容："><span>{{ props.row.optionContent }}</span></el-form-item>
+                      </el-form>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="操作人"     prop="optionUser"></el-table-column>
+                  <el-table-column label="操作IP"     prop="optionIP"></el-table-column>
+                  <el-table-column label="操作名称"   prop="optionName"></el-table-column>
+                  <el-table-column label="操作时间"   prop="optionTime"></el-table-column>
+                </el-table>
+                <div class="el-pagination-wrap text-center">
+                  <table-pagination :total="count" @change="changeCurrent"></table-pagination>
+                </div>
+              </section>
+            </el-tab-pane>
+            <el-tab-pane label="用户管理">
+              <section>
+                <el-row class="logger-params">
+                  <el-col :span="20">
+                    <span style="color: #666;">用户列表</span>
+                    <el-button style="color: #666; margin-left: 20px;" type="text" icon="el-icon-plus" @click="addServerInfo()">添加用户</el-button>
+                  </el-col>
+                  <el-col :span="4">
+                    <el-input size="mini" class="logger-params-input" v-model="parameter.name" placeholder="搜索用户" clearable></el-input>
+                    <el-button size="mini" class="search-btn" @click="doQuery()">查询</el-button>
+                  </el-col>
+                </el-row>
+              </section>
+              <section>
+                <el-table :data="userList" stripe style="width: 100%;">
+                  <el-table-column prop="userName"      label="用户名称" align="center" width="200px"></el-table-column>
+                  <el-table-column prop="createTime"    label="创建时间" align="center"></el-table-column>
+                  <el-table-column fixed="right"        label="操作"    align="center" width="200px">
+                    <template slot-scope="scope">
+                      <el-button style="padding: 0px 15px;" size="mini" type="text"><span class="el-icon-edit">修改</span></el-button>
+                      <el-button style="padding: 0px 15px;" size="mini" type="text"><span class="el-icon-delete">删除</span></el-button>
+                    </template>
+                  </el-table-column>
+                </el-table>
+                <div class="el-pagination-wrap text-center">
+                  <table-pagination :total="count" @change="changeCurrent"></table-pagination>
+                </div>
+              </section>
+            </el-tab-pane>
+          </el-tabs>
+      </el-main>
+    </el-container>
+  </div>
+</template>
+
+<script>
+import tablePagination from '@/components/commons/tablePage.vue';
+
+export default {
+  data () {
+    return {
+      count: 0,
+      parameter: {
+        name: ''
+      },
+      tableData5: [{
+          optionUser: 'root',
+          optionIP: '127.0.0.1',
+          optionName: '登录系统',
+          optionTime: '2018-09-27 12:02:00',
+          optionContent: 'root用户于2018-09-27 12:02:00登录系统'
+        }, {
+          optionUser: 'root',
+          optionIP: '127.0.0.1',
+          optionName: '登录系统',
+          optionTime: '2018-09-27 12:02:00',
+          optionContent: 'root用户于2018-09-27 12:02:00登录系统'
+        }, {
+          optionUser: 'root',
+          optionIP: '127.0.0.1',
+          optionName: '登录系统',
+          optionTime: '2018-09-27 12:02:00',
+          optionContent: 'root用户于2018-09-27 12:02:00登录系统'
+        }, {
+          optionUser: 'root',
+          optionIP: '127.0.0.1',
+          optionName: '登录系统',
+          optionTime: '2018-09-27 12:02:00',
+          optionContent: 'root用户于2018-09-27 12:02:00登录系统'
+        }, {
+          optionUser: 'root',
+          optionIP: '127.0.0.1',
+          optionName: '登录系统',
+          optionTime: '2018-09-27 12:02:00',
+          optionContent: 'root用户于2018-09-27 12:02:00登录系统'
+        }, {
+          optionUser: 'root',
+          optionIP: '127.0.0.1',
+          optionName: '登录系统',
+          optionTime: '2018-09-27 12:02:00',
+          optionContent: 'root用户于2018-09-27 12:02:00登录系统'
+        }, {
+          optionUser: 'root',
+          optionIP: '127.0.0.1',
+          optionName: '登录系统',
+          optionTime: '2018-09-27 12:02:00',
+          optionContent: 'root用户于2018-09-27 12:02:00登录系统'
+        }, {
+          optionUser: 'root',
+          optionIP: '127.0.0.1',
+          optionName: '登录系统',
+          optionTime: '2018-09-27 12:02:00',
+          optionContent: 'root用户于2018-09-27 12:02:00登录系统'
+        }, {
+          optionUser: 'root',
+          optionIP: '127.0.0.1',
+          optionName: '登录系统',
+          optionTime: '2018-09-27 12:02:00',
+          optionContent: 'root用户于2018-09-27 12:02:00登录系统'
+        }, {
+          optionUser: 'root',
+          optionIP: '127.0.0.1',
+          optionName: '登录系统',
+          optionTime: '2018-09-27 12:02:00',
+          optionContent: 'root用户于2018-09-27 12:02:00登录系统'
+        }],
+      userList: [{
+          userName: '张三',
+          createTime: '2018-09-27 12:02:00'
+        }, {
+          userName: '张三',
+          createTime: '2018-09-27 12:02:00'
+        }, {
+          userName: '张三',
+          createTime: '2018-09-27 12:02:00'
+        }, {
+          userName: '张三',
+          createTime: '2018-09-27 12:02:00'
+        }, {
+          userName: '张三',
+          createTime: '2018-09-27 12:02:00'
+        }, {
+          userName: '张三',
+          createTime: '2018-09-27 12:02:00'
+        }, {
+          userName: '张三',
+          createTime: '2018-09-27 12:02:00'
+        }, {
+          userName: '张三',
+          createTime: '2018-09-27 12:02:00'
+        }, {
+          userName: '张三',
+          createTime: '2018-09-27 12:02:00'
+        }, {
+          userName: '张三',
+          createTime: '2018-09-27 12:02:00'
+        }]
+    }
+  },
+  methods: {
+    doQuery: function () {
+      alert("搜索关键字");
+    },
+    changeCurrent: function () {
+      alert("分页");
+    }
+  },
+  components: {
+    tablePagination
+  }
+}
+</script>
+
+<style scopted>
+  .el-header {
+    line-height: 60px;
+  }
+
+  .el-main {
+    height: 100%;
+    padding-top: 0px;
+  }
+
+  .el-row {
+    line-height: 60px;
+  }
+
+  .stm-header-title {
+    font-size: 18px;
+    color: #59c4ee;
+  }
+
+  .logger-params {
+    font-size: 14px;
+    line-height: 40px;
+    margin-bottom: 5px;
+    margin-left: 10px;
+  }
+
+  .logger-params-input {
+    width: 60%;
+    vertical-align: middle;
+  }
+</style>
+
+<style>
+    #systemmanagement .el-tabs__header {
+        padding: 0;
+        position: relative;
+    }
+
+    #systemmanagement .el-tabs__item {
+        padding: 0 20px;
+        height: 40px;
+        box-sizing: border-box;
+        line-height: 40px;
+        display: inline-block;
+        list-style: none;
+        font-size: 14px;
+        font-weight: 500;
+        position: relative;
+    }
+
+    #systemmanagement .el-dialog__body {
+        padding: 10px 20px;
+    }
+</style>

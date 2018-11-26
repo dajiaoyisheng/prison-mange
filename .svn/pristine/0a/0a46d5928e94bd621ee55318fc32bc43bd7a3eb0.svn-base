@@ -1,0 +1,81 @@
+<template>
+  <!-- <div id="app"> -->
+  <!-- nav -->
+  <div>
+    <nav class="nav-wrap">
+      <el-menu :default-active="$route.path" router class="nav-ul" mode="horizontal" @select="handleSelect" background-color="#2f323c"
+        text-color="#a0abb5" active-text-color="#fff">
+        <el-menu-item index="/workbench">
+          <router-link to="/workbench">工作台</router-link>
+        </el-menu-item>
+        <el-submenu index="2">
+          <template slot="title">监控预警</template>
+          <el-menu-item index="/prewarning/tvmonitor">
+            <router-link to="/prewarning/tvmonitor">视频监控</router-link>
+          </el-menu-item>
+          <el-menu-item index="/prewarning/personnelposition">
+            <router-link to="/prewarning/personnelposition">人员定位</router-link>
+          </el-menu-item>
+          <el-menu-item index="/prewarning/pointname">
+            <router-link to="/prewarning/pointname">在押人员点名</router-link>
+          </el-menu-item>
+          <el-menu-item index="/prewarning/posunusual">
+            <router-link to="/prewarning/posunusual">定位异常预警</router-link>
+          </el-menu-item>
+          <el-menu-item index="/prewarning/violation">
+            <router-link to="/prewarning/violation">违规预警</router-link>
+          </el-menu-item>
+        </el-submenu>
+        <el-menu-item index="/querystats">
+          <router-link to="/querystats">查询统计</router-link>
+        </el-menu-item>
+        <el-menu-item index="/systemset">
+          <router-link to="/systemset">系统设置</router-link>
+        </el-menu-item>
+        <el-menu-item index="/systemmanagement">
+          <router-link to="/systemmanagement">系统管理</router-link>
+        </el-menu-item>
+        <el-menu-item index="6">
+          <el-input size="mini" placeholder="请输入内容" suffix-icon="el-icon-search" v-model="input">
+          </el-input>
+        </el-menu-item>
+      </el-menu>
+    </nav>
+  </div>
+</template>
+
+<script>
+  // import state from '@/vuex/store'
+  export default {
+    name: 'Header',
+    data() {
+      return {
+        activeIndex: '1',
+        input: '',
+      };
+    },
+    mounted:function(){
+      // 首页即工作台页面与其他页面不同,其width:1200px,居中,利用vue组件相关知识应该也可以,但还不知道怎么写
+      if(location.hash === "#/workbench"){
+        this.setNavUlWithd();
+      }
+    },
+
+    methods: {
+      handleSelect(key, keyPath) {
+        if(key === "/workbench"){
+          this.setNavUlWithd();
+        }else{
+          document.getElementsByClassName("nav-ul")[0].style.cssText = "width:100%;transition:width 0.5s;"
+        }
+      },
+      setNavUlWithd(){
+        document.getElementsByClassName("nav-ul")[0].style.cssText = "width:1200px;margin:0 auto;transition:width 0.5s;";
+      }
+    },
+  }
+
+</script>
+<style>
+
+</style>

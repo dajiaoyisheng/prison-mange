@@ -1,0 +1,21 @@
+import Konva from 'konva';
+/**
+ * 图形外面可调整大小的点
+ */
+class Transformer {
+    constructor(shape) {
+        this.fillStyle = shape.fillStyle || '#00BFF3';
+        this.uuid = shape.uuid;
+        return new Konva.Transformer({
+            rotateEnabled: false,
+            borderStroke: this.strokeStyle,
+            anchorStroke: this.strokeStyle,
+            anchorFill: this.strokeStyle,
+            anchorSize: 4,
+            uuid: this.uuid //标识
+        });
+    };
+
+}
+
+export default Transformer;

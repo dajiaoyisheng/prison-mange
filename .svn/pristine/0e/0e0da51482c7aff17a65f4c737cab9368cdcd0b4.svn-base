@@ -1,0 +1,25 @@
+<template>
+    <div id="prisonermanagement">
+        <span>{{ message }}</span>
+    </div>
+</template>
+
+<script>
+    export default {
+        data() {
+            return {
+                message: '服刑人员管理'
+            }
+        },
+        methods: {
+
+        },
+        mounted() {
+            
+        }
+    }
+</script>
+
+<style>
+    
+</style>
